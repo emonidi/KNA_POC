@@ -69,11 +69,12 @@ $(".btn").on("click",function(ev){
 
 
 var TutorialBubble = function(tutorialItem){
-    var Super = this;
+    var self = this;
     this.tutorialItem = tutorialItem;
     this.borderWidth=3;
     this.overlayElementsSizes = {}
     this.el = $(tutorialItem);
+    this.$overlay = $(".overlay");
 
     this.init = function(){
         this.hideOverlay();
@@ -87,50 +88,62 @@ var TutorialBubble = function(tutorialItem){
     }
 
     this.hideOverlay = function(){
-        if($(".overlay .dimmed")){
-            $(".overlay .dimmed").remove();
+        var $dimmed = $(".overlay .dimmed");
+        if($dimmed){
+            $dimmed.remove();
         }
         $(".overlay").hide();
     }
 
     this.appendOverLayElements = function(elementSizes){
            //the top element
-           $(".overlay").append("<div class='dimmed top'></div>");
-           $(".dimmed.top").css({
+           var fragment = document.createDocumentFragment();
+
+           var dimmedTop = document.createElement("div");
+           dimmedTop.setAttribute('class','dimmed top');
+           $(dimmedTop).css({
                width:'100%',
                height:elementSizes.marginTop,
                top:0
            });
 
+           $(fragment).append(dimmedTop);
+
            //left element
-           $(".overlay").append("<div class='dimmed left'></div>");
-            $(".dimmed.left").css({
+           var dimmedLeft = document.createElement('div');
+           dimmedLeft.setAttribute('class','dimmed left');
+            $(dimmedLeft).css({
                 width:elementSizes.marginLeft+this.borderWidth,
                 marginTop:elementSizes.marginTop,
                 height:window.innerHeight-elementSizes.marginTop
             });
 
+            $(fragment).append(dimmedLeft);
+
             //right element
-            $(".overlay").append("<div class='dimmed right'></div>");
-            $(".dimmed.right").css({
+            var dimmedRigth = document.createElement('div');
+            dimmedRigth.setAttribute('class','dimmed right');
+            $(dimmedRigth).css({
                 marginLeft:elementSizes.marginLeft+elementSizes.width-this.borderWidth,
                 height:elementSizes.height,
                 width:window.innerWidth-(elementSizes.marginLeft+elementSizes.width)+this.borderWidth,
                 marginTop:elementSizes.marginTop
             });
-
+            $(fragment).append(dimmedRigth)
 
             //bottom element
-            $(".overlay").append("<div class='dimmed bottom'></div>");
-            $(".dimmed.bottom").css({
+            var dimmedBottom = document.createElement('div');
+            dimmedBottom.setAttribute('class','dimmed bottom');
+            $(dimmedBottom).css({
                 marginLeft:elementSizes.marginLeft+this.borderWidth,
                 height:window.innerWidth-elementSizes.height-elementSizes.marginTop,
                 width:window.innerWidth,
                 marginTop:elementSizes.marginTop+elementSizes.height
             });
+            $(fragment).append(dimmedBottom);
 
-
-
+            
+            this.$overlay.append(fragment);
     }
 
     this.getCssValue = function(value){
@@ -144,8 +157,8 @@ var TutorialBubble = function(tutorialItem){
     this.cloneElement = function(){
        var $element = this.el;
 
-       var html = $($element)[0].innerHTML;
-        this.getCssValue('padding-left');
+       var html = $element[0].innerHTML;
+       this.getCssValue('padding-left');
        $("body").append("<div id='border'></div>");
        var $borderedElement = $("#border");
        elementSizes = {
@@ -168,46 +181,14 @@ var TutorialBubble = function(tutorialItem){
            transition:"1s"
        });
 
-      $(".overlay").append($borderedElement);
+      this.$overlay.append($borderedElement);
       this.appendOverLayElements(elementSizes);
     }
 
     this.findElement = function(){
 
-        Super.cloneElement(this.el);
+       self.cloneElement(this.el);
     }
 
     this.init();
 }
-
-
-//var ElementMarker = function(elementId){
-//    var Super = this;
-//    this.el = $("#"+elementId) || null ;
-//
-//    this.showOverlay = function(){
-//        $(".overlay_div").show();
-//    }
-//
-//    this.hideOverlay = function(){
-//        $(".overlay_div").hide();
-//    }
-//
-//    this.unmarkAll = function(){
-//       $(".marked").removeClass("marked");
-//       this.hideOverlay();
-//    }
-//
-//    return{
-//        mark:function(){
-//           Super.unmarkAll();
-//           Super.showOverlay();
-//           Super.el.addClass("marked");
-//           return this;
-//        },
-//        setElement:function(elementId){
-//           Super.el = $("#"+elementId);
-//           return this;
-//        }
-//    }
-//}

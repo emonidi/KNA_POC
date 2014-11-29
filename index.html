@@ -172,53 +172,10 @@
     <script src="js/bootstrap.js"></script>
     <script src="js/hopscotch.js"></script>
     <script src="js/hop.js"></script>
-    <script src="http://pud.dandrewmedia.com/js.php?popup=1"></script>
     <script>
        $(document).ready(function(){
            $('#accordion').collapse()
        })
     </script>
-     <script type="text/javascript">
-    jQuery(document).ready(function(){
-    if(document.cookie.search("popup_domination_hide_lightboxone=Y")>-1){
-        document.cookie = "popup_domination_hide_lightboxone=N";
-        console.log(document.cookie);
-    }
-    var jq = jQuery;
-
-    var trigger = false;
-    var clicked = false;
-    jq("input[type='submit']").click(function(){
-        clicked = true;
-    });
-    window.onbeforeunload = function() {
-        if (!clicked) {
-            setTimeout(function() {
-                trigger = true;
-            }, 500)
-
-        };
-        //START
-        jq("#popup_domination_lightbox_wrapper").show();
-        return "Do you really want to leave?";
-    }
-
-
-    var int = setInterval(function(){
-        if(jq("#popup_domination_lightbox_wrapper")[0]){
-           jq("#popup_domination_lightbox_wrapper").hide();
-             clearInterval(int);
-        }
-
-    });
-
-var interval = setInterval(function() {
-    if (trigger) {
-        window.onbeforeunload = null;
-        //window.parent.location = "http://tradereos.
-        clearInterval(interval);
-    }
-}, 50);
-});</script>
 </body>
 </html>
